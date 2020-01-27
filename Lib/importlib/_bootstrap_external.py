@@ -1576,24 +1576,24 @@ def _setup(_bootstrap_module):
 
     # Directly load the os module (needed during bootstrap).
     # XXX Changed to fit RustPython!!!
-    builtin_os = "_os"
-    if builtin_os in sys.modules:
-        os_module = sys.modules[builtin_os]
-    else:
-        try:
-            os_module = _bootstrap._builtin_from_name(builtin_os)
-        except ImportError:
-            raise ImportError('importlib requires _os')
-    path_separators = ['\\', '/'] if os_module.name == 'nt' else ['/']
+    # builtin_os = "_os"
+    # if builtin_os in sys.modules:
+    #     os_module = sys.modules[builtin_os]
+    # else:
+    #     try:
+    #         os_module = _bootstrap._builtin_from_name(builtin_os)
+    #     except ImportError:
+    #         raise ImportError('importlib requires _os')
+    # path_separators = ['\\', '/'] if os_module.name == 'nt' else ['/']
     
     # Assumption made in _path_join()
-    assert all(len(sep) == 1 for sep in path_separators)
-    path_sep = path_separators[0]
+    # assert all(len(sep) == 1 for sep in path_separators)
+    # path_sep = path_separators[0]
 
-    setattr(self_module, '_os', os_module)
-    setattr(self_module, 'path_sep', path_sep)
-    setattr(self_module, 'path_separators', ''.join(path_separators))
-    setattr(self_module, '_pathseps_with_colon', {f':{s}' for s in path_separators})
+    # setattr(self_module, '_os', os_module)
+    # setattr(self_module, 'path_sep', path_sep)
+    # setattr(self_module, 'path_separators', ''.join(path_separators))
+    # setattr(self_module, '_pathseps_with_colon', {f':{s}' for s in path_separators})
 
     # Directly load the _thread module (needed during bootstrap).
     thread_module = _bootstrap._builtin_from_name('_thread')
@@ -1604,17 +1604,17 @@ def _setup(_bootstrap_module):
     setattr(self_module, '_weakref', weakref_module)
 
     # Directly load the winreg module (needed during bootstrap).
-    if builtin_os == 'nt':
-        winreg_module = _bootstrap._builtin_from_name('winreg')
-        setattr(self_module, '_winreg', winreg_module)
+    # if builtin_os == 'nt':
+    #     winreg_module = _bootstrap._builtin_from_name('winreg')
+    #     setattr(self_module, '_winreg', winreg_module)
 
     # Constants
     setattr(self_module, '_relax_case', _make_relax_case())
     EXTENSION_SUFFIXES.extend(_imp.extension_suffixes())
-    if builtin_os == 'nt':
-        SOURCE_SUFFIXES.append('.pyw')
-        if '_d.pyd' in EXTENSION_SUFFIXES:
-            WindowsRegistryFinder.DEBUG_BUILD = True
+    # if builtin_os == 'nt':
+    #     SOURCE_SUFFIXES.append('.pyw')
+    #     if '_d.pyd' in EXTENSION_SUFFIXES:
+    #         WindowsRegistryFinder.DEBUG_BUILD = True
 
 
 def _install(_bootstrap_module):

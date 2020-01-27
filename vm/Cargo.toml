@@ -81,17 +81,17 @@ pwd = "1"
 exitcode = "1.1.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-crc32fast = "1.2.0"
-adler32 = "1.0.3"
-flate2 = { version = "1.0", features = ["zlib"], default-features = false }
-libz-sys = "1.0.25"
-gethostname = "0.2.0"
-subprocess = "0.1.18"
-num_cpus = "1"
-socket2 = { version = "0.3", features = ["unix"] }
+#crc32fast = "1.2.0"
+#adler32 = "1.0.3"
+#flate2 = { version = "1.0", features = ["zlib"], default-features = false }
+#libz-sys = "1.0.25"
+#gethostname = "0.2.0"
+#subprocess = "0.1.18"
+#num_cpus = "1"
+#socket2 = { version = "0.3", features = ["unix"] }
 
-[target.'cfg(not(any(target_arch = "wasm32", target_os = "redox")))'.dependencies]
-dns-lookup = "1.0"
+#[target.'cfg(not(any(target_arch = "wasm32", target_os = "redox")))'.dependencies]
+#dns-lookup = "1.0"
 
 [target."cfg(windows)".dependencies.winapi]
 version = "0.3"

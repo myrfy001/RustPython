@@ -45,18 +45,18 @@ pub fn get_time() -> f64 {
     }
 }
 
-#[cfg(all(target_arch = "wasm32", not(target_os = "wasi")))]
-pub fn get_time() -> f64 {
-    use wasm_bindgen::prelude::*;
-    #[wasm_bindgen]
-    extern "C" {
-        type Date;
-        #[wasm_bindgen(static_method_of = Date)]
-        fn now() -> f64;
-    }
-    // Date.now returns unix time in milliseconds, we want it in seconds
-    Date::now() / 1000.0
-}
+// #[cfg(all(target_arch = "wasm32", not(target_os = "wasi")))]
+// pub fn get_time() -> f64 {
+//     use wasm_bindgen::prelude::*;
+//     #[wasm_bindgen]
+//     extern "C" {
+//         type Date;
+//         #[wasm_bindgen(static_method_of = Date)]
+//         fn now() -> f64;
+//     }
+//     // Date.now returns unix time in milliseconds, we want it in seconds
+//     Date::now() / 1000.0
+// }
 
 fn time_time(_vm: &VirtualMachine) -> f64 {
     get_time()

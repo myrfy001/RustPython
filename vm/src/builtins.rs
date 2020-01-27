@@ -32,8 +32,8 @@ use crate::pyobject::{
 };
 use crate::scope::Scope;
 use crate::stdlib::ast;
-#[cfg(not(target_arch = "wasm32"))]
-use crate::stdlib::io::io_open;
+// #[cfg(not(target_arch = "wasm32"))]
+// use crate::stdlib::io::io_open;
 use crate::vm::VirtualMachine;
 
 fn builtin_abs(x: PyObjectRef, vm: &VirtualMachine) -> PyResult {
@@ -760,7 +760,8 @@ pub fn make_module(vm: &VirtualMachine, module: PyObjectRef) {
     #[cfg(target_arch = "wasm32")]
     let open = vm.ctx.none();
     #[cfg(not(target_arch = "wasm32"))]
-    let open = vm.ctx.new_function(io_open);
+    // let open = vm.ctx.new_function(io_open);
+    let open = vm.ctx.none();
 
     #[cfg(feature = "rustpython-compiler")]
     {

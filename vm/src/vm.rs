@@ -119,6 +119,8 @@ pub struct PySettings {
     /// Initialization parameter to decide to initialize or not,
     /// and to decide the importer required external filesystem access or not
     pub initialization_parameter: InitParameter,
+    pub vm_cycle_limit: u64,
+    pub vm_cycle_now: u64,
 }
 
 /// Trace events for sys.settrace and sys.setprofile.
@@ -231,8 +233,8 @@ impl VirtualMachine {
                 builtins::make_module(self, self.builtins.clone());
                 sysmodule::make_module(self, self.sys_module.clone(), self.builtins.clone());
 
-                #[cfg(not(target_arch = "wasm32"))]
-                import::import_builtin(self, "signal").expect("Couldn't initialize signal module");
+                // #[cfg(not(target_arch = "wasm32"))]
+                // import::import_builtin(self, "signal").expect("Couldn't initialize signal module");
 
                 import::init_importlib(self, initialize_parameter)
                     .expect("Initialize importlib fail");
@@ -891,7 +893,8 @@ impl VirtualMachine {
     pub fn check_signals(&self) -> PyResult<()> {
         #[cfg(not(target_arch = "wasm32"))]
         {
-            crate::stdlib::signal::check_signals(self)
+            // crate::stdlib::signal::check_signals(self)
+            Ok(())
         }
         #[cfg(target_arch = "wasm32")]
         {
