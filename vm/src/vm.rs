@@ -70,6 +70,7 @@ pub struct VirtualMachine {
     pub recursion_limit: Cell<usize>,
     pub codec_registry: RefCell<Vec<PyObjectRef>>,
     pub initialized: bool,
+    pub vm_cycle_now: Cell<u64>,
 }
 
 pub const NSIG: usize = 64;
@@ -120,7 +121,6 @@ pub struct PySettings {
     /// and to decide the importer required external filesystem access or not
     pub initialization_parameter: InitParameter,
     pub vm_cycle_limit: u64,
-    pub vm_cycle_now: u64,
 }
 
 /// Trace events for sys.settrace and sys.setprofile.
@@ -155,13 +155,19 @@ impl Default for PySettings {
             path_list: vec![],
             argv: vec![],
             initialization_parameter: InitParameter::InitializeExternal,
+            vm_cycle_limit: 10000,
         }
     }
 }
 
 impl VirtualMachine {
+
+    pub fn incr_vm_cycle_counter(& self) {
+        self.vm_cycle_now.set(self.vm_cycle_now.get() + 1);
+    }
+
     /// Create a new `VirtualMachine` structure.
-    pub fn new(settings: PySettings) -> VirtualMachine {
+    pub extern fn new(settings: PySettings) -> VirtualMachine {
         flame_guard!("new VirtualMachine");
         let ctx = PyContext::new();
 
@@ -202,6 +208,7 @@ impl VirtualMachine {
             recursion_limit: Cell::new(512),
             codec_registry: RefCell::default(),
             initialized: false,
+            vm_cycle_now: Cell::new(0),
         };
 
         objmodule::init_module_dict(

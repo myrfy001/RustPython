@@ -165,9 +165,10 @@ impl Frame {
         flame_guard!(format!("Frame::run({})", self.code.obj_name));
         // Execute until return or exception:
         loop {
-            vm.settings.vm_cycle_now = vm.settings.vm_cycle_now + 1;
-            if vm.settings.vm_cycle_now > vm.settings.vm_cycle_limit {
-                break Ok();
+            vm.incr_vm_cycle_counter();
+            if vm.settings.vm_cycle_limit != 0 && vm.vm_cycle_now.get() > vm.settings.vm_cycle_limit {
+                let vm_res_quota_error = vm.ctx.exceptions.vm_res_quota_error.clone();
+                break Err(vm.new_exception(vm_res_quota_error, vec![]));
             };
             let lineno = self.get_lineno();
             let result = self.execute_instruction(vm);

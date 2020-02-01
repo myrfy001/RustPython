@@ -414,6 +414,7 @@ pub struct ExceptionZoo {
     pub zero_division_error: PyClassRef,
     pub eof_error: PyClassRef,
     pub memory_error: PyClassRef,
+    pub vm_res_quota_error: PyClassRef,
 
     pub os_error: PyClassRef,
     pub file_not_found_error: PyClassRef,
@@ -479,6 +480,7 @@ impl ExceptionZoo {
         let unicode_translate_error =
             create_type("UnicodeTranslateError", &type_type, &unicode_error);
         let memory_error = create_type("MemoryError", &type_type, &exception_type);
+        let vm_res_quota_error = create_type("VMResQuotaError", &type_type, &exception_type);
 
         // os errors
         let os_error = create_type("OSError", &type_type, &exception_type);
@@ -545,6 +547,7 @@ impl ExceptionZoo {
             zero_division_error,
             eof_error,
             memory_error,
+            vm_res_quota_error,
             os_error,
             file_not_found_error,
             permission_error,
