@@ -1,0 +1,20 @@
+[package]
+name = "rustpythoncbinding"
+version = "0.1.1"
+description = "Rust Python virtual machine."
+authors = ["RustPython Team"]
+repository = "https://github.com/RustPython/RustPython"
+license = "MIT"
+edition = "2018"
+include = ["src/**/*.rs", "Cargo.toml"]
+
+[dependencies]
+rustpython-compiler = {path = "../compiler",  version = "0.1.1"}
+rustpython-vm = {path = "../vm", version = "0.1.1"}
+
+
+[lib]
+name = "rustpythoncbinding"
+crate-type = ["dylib"]
+
+

@@ -167,6 +167,7 @@ impl VirtualMachine {
     }
 
     /// Create a new `VirtualMachine` structure.
+    #[no_mangle]
     pub extern fn new(settings: PySettings) -> VirtualMachine {
         flame_guard!("new VirtualMachine");
         let ctx = PyContext::new();
