@@ -62,56 +62,46 @@ pub unsafe extern fn rpy_run_code_obj(vm: *const vm::VirtualMachine, code_obj: *
     if scope.is_null() {
         return ;
     }
+    println!("111");
     let vm = &*vm;
-    let code_obj= (&*code_obj).clone();
-    let scope= (&*scope).clone();
-    vm.run_code_obj(code_obj, scope).unwrap();
+    println!("222");
+    let code_obj= std::ptr::read(code_obj);
+    println!("333");
+    let scope= std::ptr::read(scope);
+    println!("444");
+    let tt1 = code_obj;
+    println!("eeeee");
+    let tt2 = scope.clone();
+    println!("rrrrr");
+    vm.run_code_obj(tt1, tt2).unwrap();
+    println!("555");
 }
 
 
-#[no_mangle]
-pub extern fn test_main() {
-
-    let mut ts:u128 = 0;
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => ts=n.as_millis(),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
-
+fn main() {
     let vm = vm::VirtualMachine::new(vm::PySettings::default());
-
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => println!("step 1, create new vm {}" , n.as_millis()-ts),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
-
+    let vm_ptr = Box::into_raw(Box::new(vm));
+    
+    let vm = unsafe{&*vm_ptr};
     let scope = vm.new_scope_with_builtins();
+    let scope_ptr = Box::into_raw(Box::new(scope));
 
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => println!("step 2, make new scope {}" , n.as_millis()-ts),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
+    let code_obj = vm.compile(
+        "print(\"777788877788\")",
+        compiler::compile::Mode::Single,
+        "<embedded>".to_string(),
+    ).unwrap();
+    let code_ptr = Box::into_raw(Box::new(code_obj));
 
-    let code_obj = vm
-        .compile(
-            r#"print("Hello World!")"#,
-            compiler::compile::Mode::Exec,
-            "<embedded>".to_string(),
-        )
-        .map_err(|err| vm.new_syntax_error(&err)).unwrap();
+    let vm1 = unsafe{&*vm};
+    let code_obj_1 = unsafe{(&*code_ptr).clone()};
+    let scope_1= unsafe{(&*scope_ptr).clone()};
+    vm1.run_code_obj(code_obj_1, scope_1).unwrap();
 
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => println!("step 3, compile code {}" , n.as_millis()-ts),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
-
-    let _ =  vm.run_code_obj(code_obj.clone(), scope.clone()).unwrap();
-    let _ =  vm.run_code_obj(code_obj.clone(), scope.clone()).unwrap();
-
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => println!("step 4, run code {}" , n.as_millis()-ts),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
+    let vm2 = unsafe{&*vm};
+    let code_obj_2 = unsafe{(&*code_ptr).clone()};
+    let scope_2= unsafe{(&*scope_ptr).clone()};
+    vm2.run_code_obj(code_obj_2, scope_2).unwrap();
 
     return
 }

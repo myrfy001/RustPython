@@ -1,1 +1,1 @@
-cbindgen --config cbindgen.toml --crate rustpythoncbinding --output rpcbindings.h
+cbindgen --config cbindgen.toml --crate rustpythoncbinding --output rpy.h

@@ -11,6 +11,7 @@ include = ["src/**/*.rs", "Cargo.toml"]
 [dependencies]
 rustpython-compiler = {path = "../compiler",  version = "0.1.1"}
 rustpython-vm = {path = "../vm", version = "0.1.1"}
+libc = {version="0.2.68"}
 
 
 [lib]
