@@ -155,7 +155,7 @@ impl Default for PySettings {
             path_list: vec![],
             argv: vec![],
             initialization_parameter: InitParameter::InitializeExternal,
-            vm_cycle_limit: 10000,
+            vm_cycle_limit: 10000000000000,
         }
     }
 }
