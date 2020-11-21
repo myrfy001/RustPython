@@ -1,3 +1,13 @@
+本项目Fork自https://github.com/RustPython/RustPython
+
+本分支对RustPython的修改如下：
+* 删减了操作系统、网络、文件IO相关的模块，使其尽量类似一个沙箱环境
+* 增加了解释器Cycle限额，超限后抛出异常（实现方法比较暴力）
+* 提供了cbindings供其他语言调用，API采用HPy规范，即显式传递虚拟机对象
+  
+本分支仅作为玩具，不可用于任何生产环境
+
+
 <img src="./logo.png" width="125" height="125" align="right" />
 
 # RustPython
